@@ -79,11 +79,15 @@ svg .tb{transform-box:fill-box}
 @keyframes pan{from{object-position:0% 50%}to{object-position:100% 50%}}
 
 /* CTA: một chấm, vẽ dần thành mũi tên */
-.cta{position:absolute;right:clamp(20px,5vw,80px);bottom:clamp(44px,9vh,100px);z-index:5;display:flex;align-items:center;gap:16px;color:#FBF3E4;padding:10px 0}
+.cta{cursor:pointer;position:absolute;right:clamp(20px,5vw,80px);bottom:clamp(44px,9vh,100px);z-index:5;display:flex;align-items:center;gap:16px;color:#FBF3E4;padding:10px 0}
 .cta .lbl{font-size:12px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;overflow:hidden;white-space:nowrap}
 .cta .lbl span{display:inline-block;transform:translateY(110%);animation:lblIn .8s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(3.4s + var(--d) * 28ms)}
 @keyframes lblIn{to{transform:none}}
-.cta svg{width:96px;height:28px;overflow:visible}
+.cta svg{width:96px;height:28px;overflow:visible;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.cta .lbl{transition:opacity .25s}
+.cta:hover svg,.cta:focus-visible svg{transform:translateX(8px)}
+.cta:hover .lbl{opacity:.85}
+.cta:focus-visible{outline:1px solid rgba(251,243,228,.6);outline-offset:6px;border-radius:4px}
 .cta .dot{fill:#FBF3E4;transform-origin:8px 14px;animation:dotIn .5s 2.4s cubic-bezier(.3,1.6,.5,1) both}
 @keyframes dotIn{from{transform:scale(0)}to{transform:scale(1)}}
 .cta .shaft,.cta .head{fill:none;stroke:#FBF3E4;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
@@ -92,8 +96,6 @@ svg .tb{transform-box:fill-box}
 @keyframes draw{to{stroke-dashoffset:0}}
 .cta .ring{fill:none;stroke:rgba(251,243,228,.55);stroke-width:1;transform-origin:8px 14px;animation:ringP 2.4s 4.2s ease-out infinite;opacity:0}
 @keyframes ringP{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.6);opacity:0}}
-.cta:hover .shaft{animation:redraw .7s cubic-bezier(.65,0,.35,1)}
-.cta:hover .head{animation:redrawH .7s ease-out}
 @keyframes redraw{0%{stroke-dashoffset:0}45%{stroke-dashoffset:84}100%{stroke-dashoffset:0}}
 @keyframes redrawH{0%,30%{stroke-dashoffset:0}50%{stroke-dashoffset:24}100%{stroke-dashoffset:0}}
 @media (max-width:720px){ .htext{left:20px;right:20px;bottom:96px} .cta{right:20px;bottom:30px} .cta svg{width:72px}
@@ -463,7 +465,7 @@ footer button{margin-top:16px}
   </div>
   <button class="cta" id="cta" aria-label="Khám phá hành trình">
     <span class="lbl" id="ctaLbl">Khám phá hành trình</span>
-    <svg viewBox="0 0 96 28" aria-hidden="true"><circle class="ring" cx="8" cy="14" r="8"/><circle class="dot" cx="8" cy="14" r="4"/><path class="shaft" d="M8 14 H92"/><path class="head" d="M82 5 L92 14 L82 23"/></svg>
+    <svg viewBox="0 0 96 28" aria-hidden="true"><path class="shaft" d="M8 14 H92"/><path class="head" d="M82 5 L92 14 L82 23"/></svg>
   </button>
 </section>
 
@@ -1270,28 +1272,31 @@ tick(); setInterval(tick, 30000);
 const WISH_TINT = ["#FFF1B8", "#FFD9E4", "#D9F0FF", "#DFF6DE", "#EFE3FF"];
 const LS_KEY = "wedding-wishes-v2";
 // Dán URL Web App của Google Apps Script vào đây (xem HUONG-DAN-DEPLOY.md, bước 1)
-const WISH_ENDPOINT = "";
+const WISH_ENDPOINT = "https://script.google.com/macros/s/AKfycby9ZXY7dhzcf0oFESNChCC8xEDX1ogFnwrCMt6LqeilD-EELaMWiQPUbI-Rsk-DHAXs7w/exec";
 const ATT_LABEL = { yes: "🎉 Sẽ đến", maybe: "🤔 Chưa chắc", no: "😢 Không đến được" };
 let DB = null;
 (async () => { try { if (window.claude && window.claude.use) DB = await window.claude.use("db"); } catch (e) { DB = null; } })();
 function readLocal(){ try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); } catch (e) { return []; } }
 function writeLocal(list){ try { localStorage.setItem(LS_KEY, JSON.stringify(list.slice(0, 60))); } catch (e) {} }
-$("wishForm").onsubmit = async e => {
+$("wishForm").onsubmit = e => {
   e.preventDefault();
   const w = { name: $("wName").value.trim().slice(0, 40), text: $("wText").value.trim().slice(0, 400), att: ($("wishForm").querySelector("[name=att]:checked") || {}).value || "", createdAt: Date.now() };
   if (!w.name || !w.text) return;
-  let saved = false;
-  if (WISH_ENDPOINT) {
-    try { await fetch(WISH_ENDPOINT, { method: "POST", mode: "no-cors", body: new URLSearchParams({ name: w.name, text: w.text, att: w.att }) }); saved = true; } catch (err) {}
-  }
-  if (!saved && DB) { try { await DB.collection("wishes").add(w); saved = true; } catch (err) {} }
-  if (!saved) writeLocal([w, ...readLocal()]);
+  // cảm ơn ngay, gửi lời chúc chạy ngầm phía sau (Google mất vài giây mới trả lời)
   const t = $("wThanks");
   t.textContent = `Cảm ơn ${w.name} đã gửi lời chúc 💌` + (w.att === "yes" ? " Hẹn gặp bạn ngày 10/12 nhé!" : "");
   t.classList.remove("on"); void t.offsetWidth; t.classList.add("on");
   $("wText").value = "";
   $("wishForm").querySelectorAll("[name=att]").forEach(r => r.checked = false);
+  sendWish(w);
 };
+async function sendWish(w){
+  if (WISH_ENDPOINT) {
+    try { await fetch(WISH_ENDPOINT, { method: "POST", mode: "no-cors", keepalive: true, body: new URLSearchParams({ name: w.name, text: w.text, att: w.att }) }); return; } catch (err) {}
+  }
+  if (DB) { try { await DB.collection("wishes").add(w); return; } catch (err) {} }
+  writeLocal([w, ...readLocal()]);
+}
 
 /* ══════════════════════════════════════════════════════════════
    8. Nhạc nền
