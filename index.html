@@ -85,6 +85,9 @@ svg .tb{transform-box:fill-box}
 @keyframes lblIn{to{transform:none}}
 .cta svg{width:96px;height:28px;overflow:visible;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
 .cta .lbl{transition:opacity .25s}
+.cta.loading{pointer-events:none}.cta.loading .lbl{opacity:.55}.cta.loading svg{animation:ctaWait 1s ease-in-out infinite alternate}
+.cta.loading::after{content:"Đang tải ảnh…";position:absolute;right:0;top:100%;font-size:12px;letter-spacing:.08em;color:#FBF3E4;opacity:.9;white-space:nowrap}
+@keyframes ctaWait{to{transform:translateX(10px)}}
 .cta:hover svg,.cta:focus-visible svg{transform:translateX(8px)}
 .cta:hover .lbl{opacity:.85}
 .cta:focus-visible{outline:1px solid rgba(251,243,228,.6);outline-offset:6px;border-radius:4px}
@@ -401,6 +404,25 @@ svg .tb{transform-box:fill-box}
 .panel.info .tm b{font-weight:700}
 .panel.info .btn{background:#F3DDB3;color:#5A4130}
 .panel.info .btn:hover{background:#FBEBCB}
+.panel.info .btn.line{background:transparent;color:#F3DDB3;border:1.5px solid rgba(243,221,179,.55);cursor:pointer;font:inherit;font-weight:600;font-size:14px}
+.panel.info .btn.line:hover{background:rgba(243,221,179,.12);border-color:#F3DDB3;color:#FBEBCB}
+.gift{position:fixed;inset:0;z-index:200;display:flex;overflow-y:auto;overscroll-behavior:contain;padding:64px 16px 24px;background:rgba(20,15,10,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:gFade .25s ease}
+.gift[hidden]{display:none}
+@keyframes gFade{from{opacity:0}}
+.gcard{position:relative;margin:auto;width:min(460px,100%);border-radius:12px;background:#F6F2EA;box-shadow:0 30px 80px rgba(0,0,0,.4);animation:gUp .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes gUp{from{transform:translateY(16px) scale(.97);opacity:0}}
+.gph{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;object-position:50% 40%;border-radius:12px 12px 0 0}
+.gbody{display:grid;grid-template-columns:40% 1fr;gap:clamp(14px,4vw,22px);align-items:center;padding:20px 22px 24px}
+.gqr{padding:8px;border-radius:12px;background:#fff;box-shadow:0 2px 10px rgba(80,70,40,.08)}
+.gqr img{display:block;width:100%;height:auto;image-rendering:pixelated}
+.gtx{color:#6B6A3E;text-align:left}
+.gr{font-family:"Great Vibes",var(--script);font-size:30px;line-height:1.1}
+.gn{margin-top:4px;font-family:"Cormorant Garamond",var(--serif);font-size:clamp(14px,4.2vw,19px);white-space:nowrap;font-weight:600;letter-spacing:.03em;padding-bottom:12px;border-bottom:1px solid #6B6A3E}
+.gb{margin-top:10px;font-family:"Cormorant Garamond",var(--serif);font-size:17px;font-weight:500}
+.gs{font-size:18px;font-weight:600;letter-spacing:.04em;user-select:all}
+.gx{position:absolute;top:-52px;right:-4px;width:44px;height:44px;border:0;border-radius:50%;background:transparent;font-size:34px;font-weight:300;line-height:1;color:#fff;cursor:pointer}
+.gx:hover{background:rgba(255,255,255,.12)}
+@media (orientation:landscape) and (max-height:560px){.gift{padding:16px 64px}.gcard{width:min(640px,100%);display:grid;grid-template-columns:44% 1fr}.gph{height:100%;aspect-ratio:auto;border-radius:12px 0 0 12px}.gbody{padding:18px 20px}.gx{top:-8px;right:-56px}}
 footer{text-align:center;padding:48px 16px 60px;background:var(--paper-2)}
 footer .s{font-family:var(--script);font-size:40px;color:var(--rose)}
 footer p{font-size:13px;color:var(--ink-soft);margin-top:6px}
@@ -455,7 +477,7 @@ footer button{margin-top:16px}
 
 <!-- ══════════ 1. HERO ══════════ -->
 <section id="hero" class="screen">
-  <div class="frame"><img src="assets/web/hero-album.jpg" alt="Trà My và Trọng Khánh trên bãi cỏ"></div>
+  <div class="frame"><img src="assets/web/hero-album.jpg" srcset="assets/web/hero-album-1400.jpg 1400w, assets/web/hero-album.jpg 2200w" sizes="(max-aspect-ratio:1/1) 150vh, 100vw" fetchpriority="high" alt="Trà My và Trọng Khánh trên bãi cỏ"></div>
   <div class="tone"></div><div class="shade"></div><div class="grainH"></div>
   <div class="htext">
     <div class="kicker fade-in" style="animation-delay:.2s">Lễ cưới của</div>
@@ -473,12 +495,12 @@ footer button{margin-top:16px}
 <section id="journey" class="screen hidden">
   <div class="jbg" id="bgA"></div><div class="jbg" id="bgB"></div>
   <div class="speed"></div>
-  <div id="car"><div id="carIn"><img src="assets/web/xe.webp" alt="Xe hoa nhìn từ phía sau"><img id="carSup" src="assets/web/xe-sup.webp" alt=""></div></div>
+  <div id="car"><div id="carIn"><img data-lazy="assets/web/xe.webp" alt="Xe hoa nhìn từ phía sau"><img id="carSup" data-lazy="assets/web/xe-sup.webp" alt=""></div></div>
   <svg id="thread" aria-hidden="true"></svg>
   <div class="spr" id="sprK"><img alt="Khánh"></div>
   <div class="spr" id="sprM"><img alt="My"></div>
   <div id="storyT"><div class="pill"><h2 id="sH"></h2><p id="sP"></p></div></div>
-  <div class="spr" id="supFly"><img src="assets/web/sup-1.webp" alt="Súp"></div>
+  <div class="spr" id="supFly"><img data-lazy="assets/web/sup-1.webp" alt="Súp"></div>
   <div id="jfx"></div>
   <div id="jtitle">Chuyến xe về chung một nhà</div>
   <nav class="map" id="map" aria-label="Các trạm dừng">
@@ -500,7 +522,7 @@ footer button{margin-top:16px}
 </section>
 
 <!-- ══════════ rèm ══════════ -->
-<div id="couple"><img src="assets/web/cuoi.webp" alt="Cô dâu chú rể và Súp"><span class="hrt">💗</span></div>
+<div id="couple"><img data-lazy="assets/web/cuoi.webp" alt="Cô dâu chú rể và Súp"><span class="hrt">💗</span></div>
 <div id="curtainUp" aria-hidden="true"><div class="msg"><div><b>Và rồi…</b><span>tụi mình về chung một nhà</span></div></div></div>
 <div id="curtain" aria-hidden="true">
   <div class="cp l"></div><div class="cp r"></div><div class="val"></div>
@@ -552,11 +574,26 @@ footer button{margin-top:16px}
           </div>
           <div class="acts">
             <a class="btn" id="mapLink" href="https://www.google.com/maps/search/?api=1&query=CTM+Palace+131+Nguy%E1%BB%85n+Phong+S%E1%BA%AFc+H%C3%A0+N%E1%BB%99i" target="_blank" rel="noopener">Chỉ đường</a>
+            <button class="btn line" id="giftBtn" type="button">🎁 Gửi quà mừng cưới</button>
           </div>
         </aside>
       </div>
     </div>
   </section>
+  <div class="gift" id="gift" role="dialog" aria-modal="true" aria-label="Mã QR mừng cưới" hidden>
+    <div class="gcard">
+      <button class="gx" id="giftX" type="button" aria-label="Đóng">×</button>
+      <img class="gph" src="assets/web/qua-cuoi-tay.jpg" alt="" width="1200" height="800" loading="lazy">
+      <div class="gbody">
+        <div class="gqr"><img src="assets/web/qr-mung-cuoi.png" loading="lazy" alt="Mã QR chuyển khoản mừng cưới" width="410" height="410"></div>
+        <div class="gtx">
+          <div class="gr">Cô dâu</div>
+          <div class="gn">NGUYỄN TRÀ MY</div>
+          <div class="gb">Vietcombank<br><span class="gs">9967054971</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
   <footer>
     <div class="s">Trà My &amp; Trọng Khánh</div>
     <p>10 · 12 · 2026 · Cảm ơn bạn đã đi cùng tụi mình 🤍</p>
@@ -627,10 +664,16 @@ heroPan(); addEventListener("resize", heroPan);
   $("names").innerHTML = `<span class="ln">${word("Trà My")} ${word("&", "amp")}</span><span class="ln">${word("Trọng Khánh")}</span>`;
   const lbl = $("ctaLbl"); lbl.innerHTML = [...lbl.textContent].map((c, i) => `<span style="--d:${i}">${c === " " ? "&nbsp;" : c}</span>`).join("");
 })();
+let started = false;
 $("cta").onclick = async () => {
+  if (started) return;
+  started = true;
   startMusic();
-  $("skipBtn").classList.remove("hidden");
-  await wipe(() => { $("hero").classList.add("hidden"); startStory(); });
+  const cta = $("cta"), slow = setTimeout(() => cta.classList.add("loading"), 300);
+  preloadJourney();
+  await ready(ESSENTIAL, 12000);   // mạng yếu: đợi đủ nền + nhân vật, quá 12 giây thì vẫn chạy tiếp
+  clearTimeout(slow); cta.classList.remove("loading");
+  await wipe(() => { $("hero").classList.add("hidden"); startStory(); $("skipBtn").classList.remove("hidden"); });
 };
 
 /* chuyển cảnh nhẹ bằng màn sáng */
@@ -669,19 +712,32 @@ function preload(src){
   }
   return PRE.get(src);
 }
-// nền đi trước theo đúng thứ tự xem, rồi tới ảnh kỷ niệm
-function preloadJourney(){
-  const j = [S_BG, ...STOPS.map(s => s.bg)].map(preload);
-  STOPS.forEach(s => (s.media || []).forEach(m => j.push(preload(IMG + (m.img || m.poster)))));
-  // xong hành trình thì tải tiếp ảnh album, để tới lúc mở album không còn trang trắng
-  Promise.all(j).then(() => SPREADS.forEach(sp => sp.p.forEach(([f]) => preload(`${IMG}spreads/${f}`))));
-}
+// chờ một nhóm ảnh, nhưng không quá `ms` mili giây (mạng yếu vẫn chạy tiếp được)
+const ready = (list, ms) => Promise.race([Promise.all(list.map(preload)), sleep(ms)]);
 const SPR_WALK = { k: "khanh-di.webp", m: "my-di.webp" };
 const SUP_STOP = 2;
-["xe.webp", "xe-sup.webp", "sup-1.webp", "sup-2.webp", "cuoi.webp", "khanh-di.webp", "my-di.webp", "keo-rem.webp", "nen-0.jpg", ...STOPS.map(s => s.bg.slice(IMG.length))]
-  .forEach(f => { const i = new Image(); i.src = IMG + f; });
+const SUP_IMGS = ["sup-1.webp", "sup-2.webp", "xe-sup.webp"].map(f => IMG + f);
+const END_IMGS = ["cuoi.webp", "keo-rem.webp"].map(f => IMG + f);
+const stopImgs = i => [STOPS[i].bg, ...(STOPS[i].media || []).map(m => IMG + (m.img || m.poster))];
+// đoạn mở đầu cần đủ những ảnh này mới đẹp
+const ESSENTIAL = [S_BG, IMG + SPR_WALK.k, IMG + SPR_WALK.m, IMG + "xe.webp", STOPS[0].bg];
+// tải trước theo đúng thứ tự xem, 3 ảnh một lúc, để mạng yếu vẫn có ảnh kịp cho cảnh kế tiếp
+let preloading = false;
+function preloadJourney(){
+  if (preloading) return; preloading = true;
+  const order = [...ESSENTIAL];
+  STOPS.forEach((s, i) => { if (i === SUP_STOP) order.push(...SUP_IMGS); order.push(...stopImgs(i)); });
+  order.push(...END_IMGS, IMG + "qr-mung-cuoi.png", IMG + "qua-cuoi-tay.jpg");
+  SPREADS.forEach(sp => sp.p.forEach(([f]) => order.push(`${IMG}spreads/${f}`)));
+  let k = 0;
+  const pump = () => { if (k < order.length) preload(order[k++]).then(pump); };
+  pump(); pump(); pump();
+}
+// gắn ảnh nhân vật / xe vào chỗ khi bắt đầu hành trình (trước đó để trống cho ảnh mở đầu tải nhanh)
+function armImgs(){ document.querySelectorAll("img[data-lazy]").forEach(im => { im.src = im.dataset.lazy; im.removeAttribute("data-lazy"); }); }
 
-let skipped = false;
+// mỗi lần chạy hành trình có một số hiệu; bỏ qua hay đi lại thì số hiệu đổi, các bước cũ đang chờ sẽ tự dừng
+let RUN = 0;
 let J = null;
 
 function placeSpr(node, x, y, h){
@@ -728,7 +784,7 @@ function bgStop(){ BG.run = false; cancelAnimationFrame(BG.raf); }
 // lao về phía trước sang cảnh mới, xe không hề dừng
 async function bgCross(src, ms = 2200){
   const F = BG[BG.front], B = BG[BG.front === "a" ? "b" : "a"];
-  await Promise.race([preload(src), new Promise(r => setTimeout(r, 2500))]);
+  await ready([src], 15000);
   bgSet(B, src); B.s = 1; B.v = .012; B.o = 0;
   F.v = .22;
   $("journey").classList.add("fast");
@@ -740,6 +796,8 @@ async function bgCross(src, ms = 2200){
 
 /* ── 3a. Mở đầu: hai người, hai ngả đường, một sợi chỉ đỏ ở công ty S ── */
 async function startStory(){
+  const run = RUN;
+  armImgs();
   const JN = $("journey");
   JN.classList.remove("hidden");
   JN.classList.add("story");
@@ -765,7 +823,7 @@ async function startStory(){
   storyText("Hai người, hai ngả đường…", "mỗi người một góc phố, cho tới một ngày");
   await tween(3200, e => { placeSpr(sK, lerp(kx0, kx1, e), y, h); placeSpr(sM, lerp(mx0, mx1, e), y, h); }, easeOut);
   [sK, sM].forEach(n => n.classList.remove("walk"));
-  if (skipped) return;
+  if (run !== RUN) return;
 
   // sợi chỉ đỏ nối hai bàn tay, vắt qua biển chữ S
   const hk = [kx1 + h * .44, y - h * .6], hm = [mx1 - h * .4, y - h * .6];
@@ -784,7 +842,7 @@ async function startStory(){
   knot.style.left = top[0] + "px"; knot.style.top = top[1] + "px";
   JN.appendChild(knot);
   await sleep(2000);
-  if (skipped) return;
+  if (run !== RUN) return;
 
   /* ── Nhịp 2: se duyên xong, hai người nhảy lên xe đi luôn ──
      Ảnh xe đã có sẵn hai người ngồi, nên xe trồi lên và hiện rõ dần đúng lúc hai người đáp xuống ghế. */
@@ -797,8 +855,8 @@ async function startStory(){
   const seatK = [r.left + r.width * .32, r.top + r.height * .42], seatM = [r.left + r.width * .55, r.top + r.height * .42];
   const p0 = [sK, sM].map(n => [parseFloat(n.style.left), parseFloat(n.style.top), parseFloat(n.style.height)]);
   [sK, sM].forEach(n => n.classList.add("walk"));
-  if (skipped) return;
-  const ride = beginRide(true);   // nền công ty S hoà dần sang trạm đầu ngay khi nhảy lên xe
+  if (run !== RUN) return;
+  const ride = beginRide(true, run);   // nền công ty S hoà dần sang trạm đầu ngay khi nhảy lên xe
   await tween(1150, e => {
     car.style.transform = `translateX(-45.5%) translateY(${(1 - easeOut(e)) * 60}%)`;
     car.style.opacity = clamp((e - .35) / .55, 0, 1);
@@ -832,7 +890,8 @@ function storyText(h, p){
 }
 
 /* ── 3b. Lăn bánh: từ cảnh hiện tại chạy thẳng sang trạm đầu ── */
-async function beginRide(fromStory){
+async function beginRide(fromStory, run = RUN){
+  armImgs();
   J.busy = true;
   $("journey").classList.add("moving");
   buildMap();
@@ -844,6 +903,7 @@ async function beginRide(fromStory){
   } else {
     await bgCross(STOPS[0].bg, 1500);
   }
+  if (run !== RUN) return;
   J.cur = 0; J.busy = false;
   updateMap(0); showCard(0);
   bindJourneyInput();
@@ -852,18 +912,31 @@ async function beginRide(fromStory){
 async function go(i){
   if (!J || J.busy || i === J.cur || i < 0 || i >= STOPS.length) return;
   J.busy = true;
-  const from = J.cur;
+  const run = RUN, from = J.cur;
+  await waitWithHint([...stopImgs(i), ...(i >= SUP_STOP && from < SUP_STOP ? SUP_IMGS : [])]);
+  if (run !== RUN) return;
   $("card").classList.remove("show");
   $("jfx").innerHTML = "";
   updateMap(i);
   if (i < SUP_STOP) hasSup(false);
   if (i > SUP_STOP && from < SUP_STOP) hasSup(true);
   await bgCross(STOPS[i].bg, clamp(1100 + 150 * (Math.abs(i - from) - 1), 1100, 1800));
+  if (run !== RUN) return;
   J.cur = i;
   if (i === SUP_STOP && from < SUP_STOP) await supJoins();
+  if (run !== RUN) return;
   if (i === STOPS.length - 1) petals();
   showCard(i);
   J.busy = false;
+}
+
+// chờ ảnh của cảnh kế tiếp; nếu quá 0,3 giây thì nút "Trạm tiếp theo" báo đang tải
+async function waitWithHint(list, ms = 15000){
+  const nb = $("nextBtn"), old = nb.textContent;
+  const t = setTimeout(() => { nb.textContent = "Đang tải…"; nb.classList.add("wait"); }, 300);
+  await ready(list, ms);
+  clearTimeout(t);
+  if (nb.classList.contains("wait")) { nb.textContent = old; nb.classList.remove("wait"); }
 }
 
 /* Súp chạy từ vỉa hè ra, đuổi theo xe rồi phóng lên ghế giữa */
@@ -962,7 +1035,8 @@ function showCard(i){
     if (el.tagName === "IMG") {
       const done = () => fit(box, el.naturalWidth, el.naturalHeight);
       el.complete && el.naturalWidth ? done() : (el.onload = done);
-      el.onerror = () => { box.remove(); if (!md.children.length) md.classList.add("none"); };
+      // mạng chập chờn: thử tải lại 1 lần rồi mới bỏ ảnh
+      el.onerror = () => { if (!el.dataset.retry) { el.dataset.retry = 1; el.src = el.src.split("?")[0] + "?r=" + Date.now(); return; } box.remove(); if (!md.children.length) md.classList.add("none"); };
     } else {
       const done = () => fit(box, el.videoWidth, el.videoHeight);
       el.readyState >= 1 ? done() : el.addEventListener("loadedmetadata", done, { once: true });
@@ -991,6 +1065,7 @@ function autoArm(){
   clearTimeout(autoT);
   if (!J || J.cur < 0 || $("journey").classList.contains("hidden")) return;
   autoT = setTimeout(() => {
+    if (!J || J.cur < 0 || $("journey").classList.contains("hidden")) return;
     const paused = J.busy || $("lb").classList.contains("on") || document.hidden;
     paused ? autoArm() : next();
   }, AUTO_MS);
@@ -1040,6 +1115,11 @@ function petals(){
 async function finish(){
   if (J.busy) return;
   J.busy = true;
+  clearTimeout(autoT);
+  const run = RUN;
+  await waitWithHint(END_IMGS, 8000);
+  if (run !== RUN) return;
+  $("skipBtn").classList.add("hidden");
   $("card").classList.remove("show");
   const car = $("car"), JN = $("journey");
   await tween(1800, e => {
@@ -1051,6 +1131,7 @@ async function finish(){
   const cp = $("couple");
   cp.classList.add("show");
   await sleep(1300);
+  if (run !== RUN) return;
   await curtainUp(() => {
     $("journey").classList.add("hidden");
     $("skipBtn").classList.add("hidden");
@@ -1106,7 +1187,7 @@ async function curtain(mid){
 }
 
 $("skipBtn").onclick = async () => {
-  skipped = true;
+  RUN++; clearTimeout(autoT);
   $("skipBtn").classList.add("hidden");
   await curtain(() => {
     $("hero").classList.add("hidden"); $("journey").classList.add("hidden");
@@ -1116,14 +1197,18 @@ $("skipBtn").onclick = async () => {
 };
 
 /* ── Đi lại hành trình sau khi đã xem album ── */
+let replaying = false;
 async function replayJourney(){
+  if (replaying) return;
+  replaying = true;
+  const run = ++RUN;
+  clearTimeout(autoT);
   await curtain(() => {
     closeLb();
     document.body.classList.remove("free");
     document.documentElement.style.height = ""; document.body.style.height = "";
     $("after").classList.add("hidden");
     scrollTo(0, 0);
-    skipped = false;
     clearStory();
     const car = $("car");
     car.style.opacity = 1; car.style.transform = "translateX(-45.5%) translateY(120%)";
@@ -1131,10 +1216,13 @@ async function replayJourney(){
     $("jfx").innerHTML = "";
     $("card").classList.remove("show");
     hasSup(false);
+    $("mapCount").textContent = `1 / ${STOPS.length}`;
     $("journey").classList.remove("hidden");
+    $("skipBtn").classList.remove("hidden");
     J = { cur: -1, busy: true };
+    beginRide(false, run);   // dựng cảnh trạm 1 ngay sau rèm, xe trồi lên đúng lúc rèm mở
   });
-  beginRide(false);
+  replaying = false;
 }
 document.querySelectorAll("[data-replay]").forEach(b => b.onclick = replayJourney);
 
@@ -1157,6 +1245,8 @@ function showAfter(){
   $("after").classList.remove("hidden");
   scrollTo(0, 0);
   if (!gStarted) { gStarted = true; buildGallery(); }
+  else if (G2.split !== splitMode()) buildSheets();
+  else layoutGallery();
 }
 
 function buildGallery(){
@@ -1198,6 +1288,7 @@ function buildSheets(){
   layoutGallery();
 }
 function layoutGallery(){
+  if ($("after").classList.contains("hidden")) return;   // album đang ẩn thì kích thước bằng 0, đo lúc này sẽ sai
   const tr = $("gtrack"), vw = innerWidth, vh = innerHeight;
   G2.range = Math.max(0, tr.scrollWidth - vw);
   $("gallery").style.height = (G2.range * G_SPEED + vh) + "px";
@@ -1256,6 +1347,13 @@ addEventListener("keydown", e => {
 /* ══════════════════════════════════════════════════════════════
    6. Thông tin & đếm ngược
    ══════════════════════════════════════════════════════════════ */
+/* quà mừng cưới: mở mã QR */
+(() => {
+  const g = $("gift"), open = () => { g.hidden = false; $("giftX").focus(); }, close = () => { g.hidden = true; $("giftBtn").focus(); };
+  $("giftBtn").onclick = open; $("giftX").onclick = close;
+  g.onclick = e => { if (e.target === g) close(); };
+  addEventListener("keydown", e => { if (e.key === "Escape" && !g.hidden) close(); });
+})();
 const WEDDING = new Date("2026-12-10T17:30:00+07:00");
 function tick(){
   let s = Math.max(0, (WEDDING - Date.now()) / 1000);
@@ -1319,8 +1417,10 @@ $("musicBtn").onclick = () => {
   if (audio.paused) { audio.play().catch(() => {}); $("musicBtn").classList.remove("off"); try { localStorage.setItem("wedding-music-v2", "on"); } catch (e) {} }
   else { audio.pause(); $("musicBtn").classList.add("off"); try { localStorage.setItem("wedding-music-v2", "off"); } catch (e) {} }
 };
-// trang chính hiện xong mới tải trước nền và ảnh hành trình
-document.readyState === "complete" ? preloadJourney() : addEventListener("load", preloadJourney);
+// ảnh mở đầu hiện xong mới tải trước ảnh hành trình (chậm nhất sau 4 giây)
+(() => { const h = document.querySelector("#hero .frame img");
+  h.complete ? preloadJourney() : h.addEventListener("load", preloadJourney, { once: true });
+  setTimeout(preloadJourney, 4000); })();
 </script>
 </body>
 </html>
