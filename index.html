@@ -378,7 +378,7 @@ svg .tb{transform-box:fill-box}
 .cd b{display:block;font-family:var(--serif);font-size:28px;font-weight:600;line-height:1}
 .cd small{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
 .ev{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid #F1E8DA}
-.ev:last-of-type{border-bottom:0}
+.ev:last-child{border-bottom:0}
 .ev .ic{width:44px;height:44px;border-radius:12px;background:#F4EBE1;color:var(--rose);display:grid;place-items:center}
 .ev .ic svg{width:22px;height:22px}
 .ev h4{font-size:15px;font-weight:700}
@@ -472,9 +472,71 @@ footer button{margin-top:16px}
   .card h3{margin-bottom:2px}
 }
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important}}
+
+/* ══════════ 0. PHONG THƯ MỞ ĐẦU ══════════ */
+body.sealed #hero,body.sealed #hero *{animation-play-state:paused !important}
+#letter{position:fixed;inset:0;z-index:95;cursor:pointer;overflow:hidden;color:#FBF3E6;background:#5E4636;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+#letter .lt,#letter .lb{position:absolute;left:0;right:0;transition:transform 1.1s cubic-bezier(.7,0,.2,1)}
+#letter .lt{top:0;height:52%;z-index:2;background:linear-gradient(170deg,#A3836A,#86684F);filter:drop-shadow(0 10px 18px rgba(0,0,0,.35))}
+#letter .lt .flap{position:absolute;left:0;top:100%;width:100%;height:12vh;display:block;margin-top:-1px}
+#letter .lb{bottom:0;height:48%;z-index:1;background:linear-gradient(180deg,#6E5442,#5E4636);border-top:1px solid rgba(40,26,16,.35);box-shadow:inset 0 1px 0 rgba(251,243,230,.08)}
+#letter .grain{position:absolute;inset:0;pointer-events:none;opacity:.14;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#letter .from{position:absolute;left:16px;right:16px;top:clamp(80px,19vh,190px);text-align:center}
+#letter .from small{display:block;font-size:11px;font-weight:500;letter-spacing:.42em;text-transform:uppercase;color:rgba(251,243,228,.85)}
+#letter .from b{display:block;margin-top:.3em;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(40px,11.5vw,72px);line-height:1.02;color:#FBF3E4;text-shadow:0 2px 24px rgba(30,20,8,.25);text-wrap:balance}
+#letter .from b i{color:#E9CF9E;padding:0 .1em}
+#letter .seal{position:absolute;left:50%;top:calc(52% + 11.5vh);z-index:3;width:clamp(96px,26vw,140px);transform:translate(-50%,-50%);filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));transition:transform .7s cubic-bezier(.5,0,.2,1),opacity .5s}
+#letter .seal svg{display:block;width:100%;height:auto}
+#letter .to{position:absolute;left:16px;right:16px;top:calc(12vh + clamp(58px,15vw,80px));text-align:center}
+#letter .to small{display:block;font-size:11px;font-weight:500;letter-spacing:.42em;text-transform:uppercase;color:rgba(251,243,228,.85)}
+#letter .to b{display:block;margin-top:.2em;font-family:"Great Vibes",cursive;font-weight:400;font-size:clamp(46px,13vw,76px);line-height:1.1;color:#F6D48B;text-wrap:balance}
+#letter .tap{position:absolute;left:0;right:0;bottom:calc(26px + env(safe-area-inset-bottom,0px));text-align:center;font-size:11px;letter-spacing:.32em;text-transform:uppercase;opacity:.7;animation:tapP 1.8s ease-in-out infinite}
+@keyframes tapP{50%{opacity:.3}}
+#letter.open .seal{transform:translate(-50%,-50%) scale(1.25);opacity:0}
+#letter.open .lt{transform:translateY(-118%);transition-delay:.25s}
+#letter.open .lb{transform:translateY(102%);transition-delay:.25s}
+#letter.open{background:transparent;pointer-events:none;transition:background 0s .25s}
+@media (orientation:landscape) and (max-height:560px){
+  #letter .lt{height:46%}
+  #letter .from{top:7vh}
+  #letter .from b{font-size:11vh;margin-top:.15em}
+  #letter .seal{top:calc(46% + 11.5vh);width:20vh}
+  #letter .to{top:23.5vh}
+  #letter .to b{font-size:11vh;margin-top:.1em}
+  #letter .tap{bottom:8px}
+}
+#letter:focus-visible{outline:none}#letter:focus-visible .seal{outline:2px solid #F3DDB3;outline-offset:6px;border-radius:50%}
 </style>
 </head>
-<body>
+<body class="sealed">
+
+<!-- ══════════ 0. PHONG THƯ: tên khách lấy từ ?name= ══════════ -->
+<div id="letter" role="button" tabindex="0" aria-label="Mở thiệp mời">
+  <div class="lt"><div class="grain"></div>
+    <div class="from"><small>A love letter from</small><b>Trà My <i>&amp;</i> Trọng Khánh</b></div>
+    <svg class="flap" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 0 H100 V22 C80 22 64 96 50 96 C36 96 20 22 0 22 Z" fill="#86684F"/>
+      <path d="M0 22 C20 22 36 96 50 96 C64 96 80 22 100 22" fill="none" stroke="rgba(243,221,179,.45)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+      <path d="M0 29 C20 29 37 100 50 100 C63 100 80 29 100 29" fill="none" stroke="rgba(40,26,16,.3)" stroke-width="1" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
+  <div class="lb"><div class="grain"></div>
+    <div class="to"><small>Trân trọng kính mời</small><b id="guestName">Bạn thân mến</b></div>
+    <div class="tap">Chạm để mở thiệp</div>
+  </div>
+  <div class="seal" aria-hidden="true"><svg viewBox="0 0 140 140"><defs>
+ <radialGradient id="sw" cx="40%" cy="34%" r="80%"><stop offset="0" stop-color="#F3E2BC"/><stop offset=".6" stop-color="#DEC28A"/><stop offset="1" stop-color="#B8955A"/></radialGradient>
+ <filter id="puff" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur in="SourceAlpha" stdDeviation="3.5" result="b"/>
+  <feSpecularLighting in="b" surfaceScale="3" specularConstant=".4" specularExponent="14" lighting-color="#FFF5DD" result="s"><feDistantLight azimuth="235" elevation="50"/></feSpecularLighting>
+  <feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/><feComposite in="SourceGraphic" in2="s2" operator="arithmetic" k2="1" k3="1"/></filter>
+ <filter id="deb" x="-20%" y="-20%" width="140%" height="140%">
+  <feOffset in="SourceAlpha" dx=".8" dy=".8" result="o1"/><feFlood flood-color="#FFF4DA" flood-opacity=".9"/><feComposite in2="o1" operator="in" result="hl"/>
+  <feOffset in="SourceAlpha" dx="-.6" dy="-.6" result="o2"/><feFlood flood-color="#7A5A2A" flood-opacity=".55"/><feComposite in2="o2" operator="in" result="sh"/>
+  <feMerge><feMergeNode in="hl"/><feMergeNode in="sh"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs><path d="M129.9 70.0 C129.8 72.1 129.3 74.2 128.8 76.2 C128.2 78.2 127.3 80.1 126.5 82.0 C125.8 83.9 124.9 85.7 124.1 87.6 C123.3 89.4 122.6 91.2 121.7 93.0 C120.9 94.8 120.1 96.6 119.0 98.3 C118.0 100.0 116.8 101.6 115.5 103.1 C114.2 104.5 112.7 105.8 111.2 107.1 C109.7 108.3 108.1 109.4 106.6 110.6 C105.1 111.8 103.6 113.0 102.2 114.4 C100.8 115.7 99.5 117.2 98.1 118.7 C96.7 120.2 95.3 121.9 93.7 123.3 C92.1 124.7 90.4 126.1 88.5 127.1 C86.7 128.0 84.6 128.7 82.5 129.0 C80.5 129.3 78.3 129.1 76.2 128.8 C74.1 128.5 72.0 127.8 70.0 127.2 C68.0 126.6 66.1 125.9 64.2 125.4 C62.3 124.9 60.4 124.4 58.5 124.0 C56.6 123.6 54.7 123.3 52.8 122.8 C51.0 122.3 49.0 121.8 47.2 121.1 C45.4 120.4 43.7 119.5 42.0 118.5 C40.3 117.6 38.7 116.4 37.2 115.2 C35.6 114.1 34.1 112.8 32.5 111.7 C30.9 110.5 29.2 109.4 27.6 108.2 C25.9 107.0 24.1 105.9 22.5 104.5 C20.9 103.1 19.3 101.7 18.0 100.0 C16.8 98.3 15.8 96.4 15.2 94.4 C14.5 92.4 14.3 90.2 14.3 88.1 C14.2 86.0 14.6 83.8 14.8 81.7 C15.1 79.7 15.5 77.7 15.7 75.7 C15.8 73.8 15.9 71.9 15.9 70.0 C15.8 68.1 15.5 66.2 15.4 64.3 C15.2 62.3 15.0 60.3 15.0 58.3 C15.1 56.3 15.3 54.3 15.7 52.4 C16.1 50.4 16.8 48.5 17.6 46.7 C18.4 44.8 19.3 43.1 20.3 41.3 C21.2 39.5 22.2 37.8 23.3 36.0 C24.3 34.3 25.3 32.5 26.5 30.8 C27.6 29.1 28.8 27.4 30.3 25.9 C31.8 24.5 33.4 23.1 35.2 22.1 C37.0 21.1 39.1 20.5 41.1 20.0 C43.1 19.5 45.3 19.4 47.4 19.1 C49.4 18.9 51.4 18.9 53.3 18.6 C55.2 18.4 57.0 18.0 58.8 17.5 C60.7 16.9 62.4 16.1 64.3 15.4 C66.1 14.7 68.0 13.8 70.0 13.2 C72.0 12.6 74.1 12.1 76.1 12.0 C78.1 11.9 80.2 12.1 82.2 12.5 C84.2 12.9 86.2 13.6 88.1 14.4 C90.0 15.1 91.8 16.1 93.6 17.0 C95.4 17.9 97.2 18.8 99.0 19.8 C100.7 20.8 102.5 21.8 104.2 23.0 C105.8 24.2 107.4 25.5 108.8 27.0 C110.1 28.4 111.3 30.2 112.3 31.9 C113.3 33.7 114.0 35.7 114.7 37.5 C115.5 39.3 116.0 41.2 116.8 43.0 C117.5 44.8 118.3 46.4 119.3 48.1 C120.3 49.7 121.5 51.2 122.7 52.9 C123.9 54.5 125.3 56.2 126.3 58.0 C127.4 59.8 128.5 61.8 129.0 63.8 C129.6 65.8 129.9 67.9 129.9 70.0Z" fill="url(#sw)" filter="url(#puff)"/><g filter="url(#deb)"><circle cx="70" cy="70" r="41" fill="none" stroke="#B9965C" stroke-width="1.1"/>
+<text x="70" y="82" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-weight="500" font-size="36" letter-spacing="-1" fill="#A88449">M<tspan font-size="22" dx="1" dy="-2">&amp;</tspan><tspan dx="1" dy="2">K</tspan></text></g></svg></div>
+</div>
 
 <!-- ══════════ 1. HERO ══════════ -->
 <section id="hero" class="screen">
@@ -561,21 +623,18 @@ footer button{margin-top:16px}
         <aside class="panel info">
           <h3>Thông tin lễ cưới</h3>
           <div class="datebig">
-            <div class="d">10 · 12 · 2026</div>
-            <div class="w">Thứ Năm</div>
+            <div class="d" id="evDate">10 · 12 · 2026</div>
+            <div class="w" id="evDay">Thứ Năm</div>
             <div class="cd" id="cd"></div>
           </div>
-          <div class="ev">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v7a4 4 0 0 0 8 0V3M12 14v7M8 21h8"/></svg></div>
-            <div><h4>Tiệc nhà gái</h4><div class="tm"><b>16:30</b> chiều</div><p>Thứ Tư, 09/12/2026 (1/11 Âm lịch)<br>Chợ Tân Thành Mới (Chợ Cây Số cũ), phường Bách Quang, Thái Nguyên</p></div>
-          </div>
+          <div id="evList">
           <div class="ev">
             <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="14" r="6"/><circle cx="15" cy="14" r="6"/><path d="M10 4h4l-2 3z"/></svg></div>
-            <div><h4>Lễ Thành Hôn</h4><div class="tm"><b>18:00</b> tối</div><p>Thứ Năm, 10/12/2026 (2/11 Âm lịch)<br>CTM Palace, 131 Đ. Nguyễn Phong Sắc, Nghĩa Đô, Hà Nội</p></div>
+            <div><h4>Lễ Thành Hôn</h4><div class="tm"><b>17:30</b> đón khách · <b>18:00</b> khai tiệc</div><p>Thứ Năm, 10/12/2026 (2/11 Âm lịch)<br>CTM Palace, 131 Đ. Nguyễn Phong Sắc, Nghĩa Đô, Hà Nội</p></div>
+          </div>
           </div>
           <div class="acts">
-            <a class="btn" id="mapLink" href="https://www.google.com/maps/search/?api=1&query=CTM+Palace+131+Nguy%E1%BB%85n+Phong+S%E1%BA%AFc+H%C3%A0+N%E1%BB%99i" target="_blank" rel="noopener">📍 Chỉ đường Lễ Thành Hôn</a>
-            <a class="btn" id="mapLinkTN" href="https://maps.google.com/?cid=11091412392089997057" target="_blank" rel="noopener">📍 Chỉ đường Tiệc nhà gái</a>
+            <span id="mapBtns" style="display:contents"><a class="btn" href="https://www.google.com/maps/search/?api=1&query=CTM+Palace+131+Nguy%E1%BB%85n+Phong+S%E1%BA%AFc+H%C3%A0+N%E1%BB%99i" target="_blank" rel="noopener">📍 Chỉ đường</a></span>
             <button class="btn line" id="giftBtn" type="button">🎁 Gửi quà mừng cưới</button>
           </div>
         </aside>
@@ -1233,7 +1292,7 @@ document.querySelectorAll("[data-replay]").forEach(b => b.onclick = replayJourne
    ══════════════════════════════════════════════════════════════ */
 // h: chiều cao khung (vh), y: lệch lên/xuống (vh), cap: chú thích viết tay
 // album: 16 trang (bìa + 15 trang đôi) giữ vị trí ảnh của bản thiết kế, thứ tự concept đảo ngược; toạ độ tính theo % trang
-const SPREADS = [{"ar": 1.5198, "p": [["s00-1.jpg", 0.0, 0.0, 45.59, 100.0], ["s00-2.jpg", 49.87, 0.0, 50.13, 100.0]], "t": []}, {"ar": 1.4286, "p": [["s11-1.jpg", 2.5, 3.54, 45.0, 44.96], ["s11-3.jpg", 2.5, 51.5, 45.0, 44.96], ["s11-2.jpg", 50.0, 0, 50.0, 100]], "t": [{"x": 3, "y": 38, "w": 30, "c": "cute tag", "t": "Bế lên là phải có quà nha ba"}, {"x": 56, "y": 84, "w": 30, "c": "cute tag", "t": "Ngồi ngoan chờ phát bánh 🦴"}]}, {"ar": 1.4286, "p": [["s12-1.jpg", 0.0, 0, 50.0, 100], ["s12-2.jpg", 52.5, 4.11, 21.75, 44.39], ["s13-2.jpg", 75.75, 4.11, 21.75, 44.39], ["s14-2.jpg", 52.5, 51.5, 21.75, 44.39], ["s14-3.jpg", 75.75, 51.5, 21.75, 44.39]], "t": [{"x": 5, "y": 84, "w": 34, "c": "cute tag", "t": "Ba mẹ lo hôn nhau, Súp lo phần cười 😁"}]}, {"ar": 1.4286, "p": [["s14-1.jpg", 2.5, 4.11, 21.75, 44.39], ["s15-1.jpg", 25.75, 4.11, 21.75, 44.39], ["s15-2.jpg", 2.5, 51.5, 21.75, 44.39], ["s15-3.jpg", 25.75, 51.5, 21.75, 44.39], ["s13-1.jpg", 50.0, 0, 50.0, 100]], "t": [{"x": 55, "y": 84, "w": 34, "c": "cute tag", "t": "Ảnh cưới của ba mẹ, nhưng spotlight là của Súp ✨"}]}, {"ar": 1.4286, "p": [["s06-1.jpg", 0.0, 0, 50.0, 100], ["s06-2.jpg", 52.5, 4.11, 21.75, 44.39], ["s06-3.jpg", 75.75, 4.11, 21.75, 44.39], ["s07-1.jpg", 52.5, 51.5, 21.75, 44.39], ["s07-2.jpg", 75.75, 51.5, 21.75, 44.39]], "t": []}, {"ar": 1.4286, "p": [["s08-2.jpg", 2.5, 4.11, 21.75, 44.39], ["s09-2.jpg", 25.75, 4.11, 21.75, 44.39], ["s10-2.jpg", 2.5, 51.5, 21.75, 44.39], ["s10-3.jpg", 25.75, 51.5, 21.75, 44.39], ["s08-1.jpg", 50.0, 0, 50.0, 100]], "t": [{"x": 55, "y": 84, "w": 34, "c": "cute tag", "t": "Hôn Súp trước, hôn chồng sau 💋"}]}, {"ar": 1.4286, "p": [["s09-1.jpg", 0.0, 0, 50.0, 100], ["s10-1.jpg", 50.0, 0, 50.0, 100]], "t": [{"x": 5, "y": 82, "w": 34, "c": "cute tag", "t": "Súp: “Con là con chung đó nha, đừng giành!”"}]}, {"ar": 1.4286, "p": [["s01-1.jpg", 2.5, 4.11, 21.75, 44.39], ["s01-2.jpg", 25.75, 4.11, 21.75, 44.39], ["s05-1.jpg", 2.5, 51.5, 21.75, 44.39], ["s02-1.jpg", 25.75, 51.5, 21.75, 44.39], ["s03-2.jpg", 52.5, 3.82, 45.0, 44.96], ["s03-1.jpg", 52.5, 51.78, 21.75, 44.39], ["s03-3.jpg", 75.75, 51.78, 21.75, 44.39]], "t": []}];
+const SPREADS = [{"ar": 1.5198, "p": [["s00-1.jpg", 0.0, 0.0, 45.59, 100.0], ["s00-2.jpg", 49.87, 0.0, 50.13, 100.0]], "t": []}, {"ar": 1.4286, "p": [["s11-1.jpg", 2.5, 3.54, 45.0, 44.96], ["s11-3.jpg", 2.5, 51.5, 45.0, 44.96], ["s11-2.jpg", 50.0, 0, 50.0, 100]], "t": [{"x": 3, "y": 38, "w": 30, "c": "cute tag", "t": "Bế lên là phải có quà nha ba"}, {"x": 56, "y": 84, "w": 30, "c": "cute tag", "t": "Ngồi ngoan chờ phát bánh 🦴"}]}, {"ar": 1.4286, "p": [["s12-1.jpg", 0.0, 0, 50.0, 100], ["s12-2.jpg", 52.5, 4.11, 21.75, 44.39], ["s13-2.jpg", 75.75, 4.11, 21.75, 44.39], ["s14-2.jpg", 52.5, 51.5, 21.75, 44.39], ["s14-3.jpg", 75.75, 51.5, 21.75, 44.39]], "t": []}, {"ar": 1.4286, "p": [["s14-1.jpg", 2.5, 4.11, 21.75, 44.39], ["s15-1.jpg", 25.75, 4.11, 21.75, 44.39], ["s15-2.jpg", 2.5, 51.5, 21.75, 44.39], ["s15-3.jpg", 25.75, 51.5, 21.75, 44.39], ["s13-1.jpg", 50.0, 0, 50.0, 100]], "t": [{"x": 55, "y": 84, "w": 34, "c": "cute tag", "t": "Ảnh cưới của ba mẹ, nhưng spotlight là của Súp ✨"}]}, {"ar": 1.4286, "p": [["s06-1.jpg", 0.0, 0, 50.0, 100], ["s06-2.jpg", 52.5, 4.11, 21.75, 44.39], ["s06-3.jpg", 75.75, 4.11, 21.75, 44.39], ["s07-1.jpg", 52.5, 51.5, 21.75, 44.39], ["s07-2.jpg", 75.75, 51.5, 21.75, 44.39]], "t": []}, {"ar": 1.4286, "p": [["s08-2.jpg", 2.5, 4.11, 21.75, 44.39], ["s09-2.jpg", 25.75, 4.11, 21.75, 44.39], ["s10-2.jpg", 2.5, 51.5, 21.75, 44.39], ["s10-3.jpg", 25.75, 51.5, 21.75, 44.39], ["s08-1.jpg", 50.0, 0, 50.0, 100]], "t": [{"x": 55, "y": 84, "w": 34, "c": "cute tag", "t": "Hôn Súp trước, hôn chồng sau 💋"}]}, {"ar": 1.4286, "p": [["s09-1.jpg", 0.0, 0, 50.0, 100], ["s10-1.jpg", 50.0, 0, 50.0, 100]], "t": [{"x": 5, "y": 82, "w": 34, "c": "cute tag", "t": "Súp: “Con là con chung đó nha, đừng giành!”"}]}, {"ar": 1.4286, "p": [["s01-1.jpg", 2.5, 4.11, 21.75, 44.39], ["s01-2.jpg", 25.75, 4.11, 21.75, 44.39], ["s05-1.jpg", 2.5, 51.5, 21.75, 44.39], ["s02-1.jpg", 25.75, 51.5, 21.75, 44.39], ["s03-2.jpg", 52.5, 3.82, 45.0, 44.96], ["s03-1.jpg", 52.5, 51.78, 21.75, 44.39], ["s03-3.jpg", 75.75, 51.78, 21.75, 44.39]], "t": []}];
 // danh sách ảnh theo thứ tự trang, dùng cho chế độ xem ảnh lớn
 const PHOTOS = SPREADS.flatMap((sp, si) => sp.p.map(([f]) => ({ src: `${IMG}spreads/${f}`, page: si })));
 const G2 = { items: [], range: 0, top: 0, raf: 0 };
@@ -1356,7 +1415,61 @@ addEventListener("keydown", e => {
   g.onclick = e => { if (e.target === g) close(); };
   addEventListener("keydown", e => { if (e.key === "Escape" && !g.hidden) close(); });
 })();
-const WEDDING = new Date("2026-12-10T18:00:00+07:00");
+
+/* ══════════════════════════════════════════════════════════════
+   0. Link riêng cho từng khách: ?name=<tên trên thiệp>&version=1|2|3
+   1 = CTM · 2 = Chợ Cây Số (tiệc nhà gái) · 3 = Chợ Cây Số & CTM
+   ══════════════════════════════════════════════════════════════ */
+const MAP_CTM = "https://www.google.com/maps/search/?api=1&query=CTM+Palace+131+Nguy%E1%BB%85n+Phong+S%E1%BA%AFc+H%C3%A0+N%E1%BB%99i";
+const MAP_TN = "https://maps.google.com/?cid=11091412392089997057";
+const ADDR_CTM = "CTM Palace, 131 Đ. Nguyễn Phong Sắc, Nghĩa Đô, Hà Nội";
+const ADDR_TN = "Chợ Tân Thành Mới (Chợ Cây Số cũ), phường Bách Quang, Thái Nguyên";
+const DAY_10 = "Thứ Năm, 10/12/2026 (2/11 Âm lịch)", DAY_09 = "Thứ Tư, 09/12/2026 (1/11 Âm lịch)";
+const IC = {
+  ring: '<circle cx="9" cy="14" r="6"/><circle cx="15" cy="14" r="6"/><path d="M10 4h4l-2 3z"/>',
+  cup: '<path d="M8 3v7a4 4 0 0 0 8 0V3M12 14v7M8 21h8"/>',
+  home: '<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>'
+};
+const VERSIONS = {
+  1: { date: "10 · 12 · 2026", day: "Thứ Năm", at: "2026-12-10T17:30:00+07:00", meet: "10/12",
+       ev: [["ring", "Lễ Thành Hôn", "<b>17:30</b> đón khách · <b>18:00</b> khai tiệc", DAY_10, ADDR_CTM]],
+       maps: [["Chỉ đường", MAP_CTM]] },
+  2: { date: "09 · 12 · 2026", day: "Thứ Tư", at: "2026-12-09T16:30:00+07:00", meet: "09/12",
+       ev: [["cup", "Tiệc nhà gái", "<b>16:30</b> chiều", DAY_09, ADDR_TN]],
+       maps: [["Chỉ đường", MAP_TN]] },
+  3: { date: "10 · 12 · 2026", day: "Thứ Năm", at: "2026-12-10T14:00:00+07:00", meet: "10/12",
+       ev: [["home", "Lễ Vu Quy · Nhà gái", "<b>14:00</b> chiều", DAY_10, ADDR_TN],
+            ["ring", "Tiệc nhà trai", "<b>18:00</b> tối", DAY_10, ADDR_CTM]],
+       maps: [["Chỉ đường nhà gái", MAP_TN]] }
+};
+const QS = new URLSearchParams(location.search);
+// link dán qua vài ứng dụng bị đổi "&" thành "&amp;" → tham số thành "amp;version"
+const VER = VERSIONS[QS.get("version") || QS.get("amp;version")] || VERSIONS[1];
+const GUEST = (QS.get("name") || "").replace(/\s+/g, " ").trim().slice(0, 40);
+(() => {
+  $("evDate").textContent = VER.date; $("evDay").textContent = VER.day;
+  $("evList").innerHTML = VER.ev.map(([ic, h, tm, day, addr]) => `<div class="ev">
+    <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[ic]}</svg></div>
+    <div><h4>${h}</h4><div class="tm">${tm}</div><p>${day}<br>${addr}</p></div></div>`).join("");
+  $("mapBtns").innerHTML = VER.maps.map(([l, u]) => `<a class="btn" href="${u}" target="_blank" rel="noopener">📍 ${l}</a>`).join("");
+  if (GUEST) {
+    $("guestName").textContent = GUEST;
+    // điền sẵn tên vào sổ lưu bút, bỏ phần xưng hô ở đầu ("Bạn Uyên" → "Uyên")
+    $("wName").value = GUEST.replace(/^(bạn|anh|chị|em|thầy|cô|sếp)\s+/i, "");
+  }
+  const L = $("letter");
+  let opened = false;
+  const openLetter = () => {
+    if (opened) return; opened = true;
+    L.classList.add("open");
+    document.body.classList.remove("sealed");
+    startMusic();
+    setTimeout(() => L.remove(), 1500);
+  };
+  L.addEventListener("click", openLetter);
+  L.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLetter(); } });
+})();
+const WEDDING = new Date(VER.at);
 function tick(){
   let s = Math.max(0, (WEDDING - Date.now()) / 1000);
   const d = Math.floor(s / 86400); s -= d * 86400;
@@ -1384,7 +1497,7 @@ $("wishForm").onsubmit = e => {
   if (!w.name || !w.text) return;
   // cảm ơn ngay, gửi lời chúc chạy ngầm phía sau (Google mất vài giây mới trả lời)
   const t = $("wThanks");
-  t.textContent = `Cảm ơn ${w.name} đã gửi lời chúc 💌` + (w.att === "yes" ? " Hẹn gặp bạn ngày 10/12 nhé!" : "");
+  t.textContent = `Cảm ơn ${w.name} đã gửi lời chúc 💌` + (w.att === "yes" ? ` Hẹn gặp bạn ngày ${VER.meet} nhé!` : "");
   t.classList.remove("on"); void t.offsetWidth; t.classList.add("on");
   $("wText").value = "";
   $("wishForm").querySelectorAll("[name=att]").forEach(r => r.checked = false);
