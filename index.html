@@ -385,6 +385,7 @@ svg .tb{transform-box:fill-box}
 .ev p{font-size:14px;color:#5A5047;line-height:1.55}
 .fill{background:#FFF1C9;border-bottom:1.5px dashed #D9A93A;padding:0 3px;border-radius:3px}
 .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.acts .btn{flex:1 1 auto;justify-content:center;text-decoration:none}
 .btn.line{background:transparent;color:var(--ink);border:1.5px solid #E0D3C0}
 .btn.line:hover{border-color:var(--rose);color:var(--rose);background:transparent}
 .panel.info{background:linear-gradient(160deg,#9A7B62,#7A5E49);color:#FBF3E6;border:0;box-shadow:0 24px 60px rgba(90,64,44,.28);position:relative;overflow:hidden}
@@ -566,14 +567,15 @@ footer button{margin-top:16px}
           </div>
           <div class="ev">
             <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v7a4 4 0 0 0 8 0V3M12 14v7M8 21h8"/></svg></div>
-            <div><h4>Tiệc mừng</h4><div class="tm"><b>17:30</b> đón khách · <b>18:00</b> khai tiệc</div><p>Thứ Năm, 10/12/2026 (2/11 Âm lịch)<br>CTM Palace, 131 Đ. Nguyễn Phong Sắc, Nghĩa Đô, Hà Nội</p></div>
+            <div><h4>Tiệc nhà gái</h4><div class="tm"><b>16:30</b> chiều</div><p>Thứ Tư, 09/12/2026 (1/11 Âm lịch)<br>Chợ Tân Thành Mới (Chợ Cây Số cũ), phường Bách Quang, Thái Nguyên</p></div>
           </div>
           <div class="ev">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></div>
-            <div><h4>Lễ Vu Quy · Nhà gái</h4><div class="tm"><b>14:00</b> đón dâu</div><p>Thứ Năm, 10/12/2026 (2/11 Âm lịch)<br>Chợ Tân Thành Mới, Tổ dân phố Tân Thành, phường Bách Quang, Thái Nguyên</p></div>
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="14" r="6"/><circle cx="15" cy="14" r="6"/><path d="M10 4h4l-2 3z"/></svg></div>
+            <div><h4>Lễ Thành Hôn</h4><div class="tm"><b>18:00</b> tối</div><p>Thứ Năm, 10/12/2026 (2/11 Âm lịch)<br>CTM Palace, 131 Đ. Nguyễn Phong Sắc, Nghĩa Đô, Hà Nội</p></div>
           </div>
           <div class="acts">
-            <a class="btn" id="mapLink" href="https://www.google.com/maps/search/?api=1&query=CTM+Palace+131+Nguy%E1%BB%85n+Phong+S%E1%BA%AFc+H%C3%A0+N%E1%BB%99i" target="_blank" rel="noopener">Chỉ đường</a>
+            <a class="btn" id="mapLink" href="https://www.google.com/maps/search/?api=1&query=CTM+Palace+131+Nguy%E1%BB%85n+Phong+S%E1%BA%AFc+H%C3%A0+N%E1%BB%99i" target="_blank" rel="noopener">📍 Chỉ đường Lễ Thành Hôn</a>
+            <a class="btn" id="mapLinkTN" href="https://maps.google.com/?cid=11091412392089997057" target="_blank" rel="noopener">📍 Chỉ đường Tiệc nhà gái</a>
             <button class="btn line" id="giftBtn" type="button">🎁 Gửi quà mừng cưới</button>
           </div>
         </aside>
@@ -585,11 +587,11 @@ footer button{margin-top:16px}
       <button class="gx" id="giftX" type="button" aria-label="Đóng">×</button>
       <img class="gph" src="assets/web/qua-cuoi-tay.jpg" alt="" width="1200" height="800" loading="lazy">
       <div class="gbody">
-        <div class="gqr"><img src="assets/web/qr-mung-cuoi.png" loading="lazy" alt="Mã QR chuyển khoản mừng cưới" width="410" height="410"></div>
+        <div class="gqr"><img src="assets/web/qr-mung-cuoi-tcb.png" loading="lazy" alt="Mã QR chuyển khoản mừng cưới" width="410" height="410"></div>
         <div class="gtx">
           <div class="gr">Cô dâu</div>
           <div class="gn">NGUYỄN TRÀ MY</div>
-          <div class="gb">Vietcombank<br><span class="gs">9967054971</span></div>
+          <div class="gb">Techcombank<br><span class="gs">1903 2022 0810 12</span></div>
         </div>
       </div>
     </div>
@@ -727,7 +729,7 @@ function preloadJourney(){
   if (preloading) return; preloading = true;
   const order = [...ESSENTIAL];
   STOPS.forEach((s, i) => { if (i === SUP_STOP) order.push(...SUP_IMGS); order.push(...stopImgs(i)); });
-  order.push(...END_IMGS, IMG + "qr-mung-cuoi.png", IMG + "qua-cuoi-tay.jpg");
+  order.push(...END_IMGS, IMG + "qr-mung-cuoi-tcb.png", IMG + "qua-cuoi-tay.jpg");
   SPREADS.forEach(sp => sp.p.forEach(([f]) => order.push(`${IMG}spreads/${f}`)));
   let k = 0;
   const pump = () => { if (k < order.length) preload(order[k++]).then(pump); };
@@ -1354,7 +1356,7 @@ addEventListener("keydown", e => {
   g.onclick = e => { if (e.target === g) close(); };
   addEventListener("keydown", e => { if (e.key === "Escape" && !g.hidden) close(); });
 })();
-const WEDDING = new Date("2026-12-10T17:30:00+07:00");
+const WEDDING = new Date("2026-12-10T18:00:00+07:00");
 function tick(){
   let s = Math.max(0, (WEDDING - Date.now()) / 1000);
   const d = Math.floor(s / 86400); s -= d * 86400;
